@@ -31,8 +31,7 @@ export default function Home() {
           aria-label="Question 1"
           title={
             <div className="flex justify-between">
-              Question 1. Docker Build를 할 때 Docker build의 add 마다 layer가
-              생기나요?
+              Question 1. 안녕하세요 점심은 뭘 드셨나요?
               <Button
                 color="primary"
                 variant="bordered"
