@@ -11,15 +11,46 @@ import {
 } from "@nextui-org/react";
 import { MdOutlineThumbUpAlt } from "react-icons/md";
 
+const response = {
+  date: "2024-03-30",
+  questions: [
+    {
+      question_id: "q1",
+      title: "Django와 MongoDB 연동 방법은?",
+      author_nickname: "developer123",
+      created_at: "2024-03-30T10:00:00Z",
+      upvotes: 5,
+      answers: [
+        {
+          answer_id: "a1",
+          author_nickname: "expert456",
+          created_at: "2024-03-30T11:00:00Z",
+          content: "뭐라뭐라 솰라솰라",
+          upvotes: 10,
+        },
+        {
+          answer_id: "a2",
+          author_nickname: "newbie789",
+          created_at: "2024-03-30T12:00:00Z",
+          content: "뭐라뭐라 솰라솰라",
+          upvotes: 3,
+        },
+      ],
+    },
+  ],
+};
+
 export default function Home() {
-  const defaultContent =
-    "안녕하세요! 좋은 하루 보내세요!";
+  const defaultContent = "안녕하세요! 좋은 하루 보내세요!";
+  let mainDate = new Date();
 
   return (
     <main className="flex min-h-screen flex-col p-24 gap-10">
       <div className="sticky top-0 bg-white z-50">
         <div className="flex flex-row gap-2 justify-between">
-          <h1 className="text-4xl font-semibold">2024.03.27</h1>
+          <h1 className="text-4xl font-semibold">
+            mainDate.toISOString().split('T')[0]
+          </h1>
           <Button color="primary" variant="ghost" disabled>
             질문하기
           </Button>
