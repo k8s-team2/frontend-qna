@@ -13,7 +13,7 @@ import { MdOutlineThumbUpAlt } from "react-icons/md";
 
 export default function Home() {
   const defaultContent =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+    "안녕하세요! 좋은 하루 보내세요!";
 
   return (
     <main className="flex min-h-screen flex-col p-24 gap-10">
@@ -31,8 +31,7 @@ export default function Home() {
           aria-label="Question 1"
           title={
             <div className="flex justify-between">
-              Question 1. Docker Build를 할 때 Docker build의 add 마다 layer가
-              생기나요?
+              Question 1. 안녕하세요 점심은 뭘 드셨나요?
               <Button
                 color="primary"
                 variant="bordered"
