@@ -1,135 +1,129 @@
 "use client";
-import {
-  Accordion,
-  AccordionItem,
-  Textarea,
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-} from "@nextui-org/react";
-import { MdOutlineThumbUpAlt } from "react-icons/md";
+import { Accordion, AccordionItem, Input, Chip } from "@nextui-org/react";
 
-const response = {
-  date: "2024-03-30",
-  questions: [
-    {
-      question_id: "q1",
-      title: "Django와 MongoDB 연동 방법은?",
-      author_nickname: "developer123",
-      created_at: "2024-03-30T10:00:00Z",
-      upvotes: 5,
-      answers: [
-        {
-          answer_id: "a1",
-          author_nickname: "expert456",
-          created_at: "2024-03-30T11:00:00Z",
-          content: "뭐라뭐라 솰라솰라",
-          upvotes: 10,
-        },
-        {
-          answer_id: "a2",
-          author_nickname: "newbie789",
-          created_at: "2024-03-30T12:00:00Z",
-          content: "뭐라뭐라 솰라솰라",
-          upvotes: 3,
-        },
-      ],
-    },
-  ],
-};
+import VoteupButton from "@/components/VoteupButton";
+import CommentArea from "@/components/CommentArea";
+import QuestionArea from "@/components/QuestionArea";
+import { useState, useEffect } from "react";
+import CommenSection from "@/components/CommenSection";
+
+interface IQuestion {
+  question_id: string;
+  title: string;
+  author_nickname: string;
+  created_at: string;
+  upvotes: number;
+  answers: {
+    answer_id: string;
+    author_nickname: string;
+    created_at: string;
+    content: string;
+    upvotes: number;
+  }[];
+}
 
 export default function Home() {
-  const defaultContent = "안녕하세요! 좋은 하루 보내세요!";
+  // 오늘 날짜 가져오기
   let mainDate = new Date();
+  // 시차 간격 가져오기
+  const offset = mainDate.getTimezoneOffset();
+  // 시차 적용
+  mainDate = new Date(mainDate.getTime() - offset * 60 * 1000);
+  const today = mainDate.toISOString().split("T")[0];
+  const [searchDate, setSearchDate] = useState(today);
+  const [isNickname, setIsNickname] = useState(true);
+  const [qnaList, setQnaList] = useState<IQuestion[]>([]);
+  const [nickname, setNickname] = useState("");
+
+  async function getQnaData() {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/qna/questions/?date=${today}`
+      );
+      const qnaData = await response.json();
+      console.log(qnaData);
+      setQnaList(qnaData.questions);
+    } catch (error) {
+      return "Please check your server";
+    }
+  }
+
+  useEffect(() => {
+    let n = localStorage.getItem("nickname");
+
+    if (n) {
+      setNickname(n);
+      console.log(`page.tsx ${n}`);
+      setIsNickname(false);
+    }
+    getQnaData();
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col p-24 gap-10">
       <div className="sticky top-0 bg-white z-50">
         <div className="flex flex-row gap-2 justify-between">
-          <h1 className="text-4xl font-semibold">
-            mainDate.toISOString().split('T')[0]
-          </h1>
-          <Button color="primary" variant="ghost" disabled>
+          <div>
+            <h1 className="text-4xl font-semibold">{searchDate}</h1>
+            <Input
+              label="Date"
+              placeholder="Enter your date"
+              type="date"
+              className="w-36"
+              value={searchDate}
+              max={today}
+              onChange={(e) => {
+                setSearchDate((prev) => e.target.value);
+              }}
+            />
+          </div>
+          {/* <Button color="primary" variant="ghost" isDisabled={isNickname}>
             질문하기
-          </Button>
+          </Button> */}
+          <QuestionArea
+            isNickname={isNickname}
+            today={today}
+            nickname={"test"}
+          />
         </div>
       </div>
+
       <Accordion selectionMode="multiple">
-        <AccordionItem
-          key="1"
-          aria-label="Question 1"
-          title={
-            <div className="flex justify-between">
-              Question 1. 안녕하세요 점심은 뭘 드셨나요?
-              <Button
-                color="primary"
-                variant="bordered"
-                startContent={<MdOutlineThumbUpAlt />}
-                size="sm"
-              >
-                10
-              </Button>
-            </div>
-          }
-        >
-          <div className="flex flex-col gap-10">
-            <p>나는 뭘 잘못했을까? </p>
-            <div>
-              <Textarea
-                label="답변"
-                placeholder="답변을 입력하시려면 닉네임 설정을 하세요."
-                disabled
-              />
-              <Button color="primary" variant="ghost" className="mt-3">
-                답변 입력
-              </Button>
-            </div>
-            <Card shadow="none" className="bg-slate-200 mb-5">
-              <CardBody>
-                <div className="flex flex-col gap-3 py-5 px-3">
-                  <div className="flex flex-row items-center gap-3">
-                    <p className="text-blue-600">마우스</p>
-                    <Button
-                      color="primary"
-                      variant="bordered"
-                      startContent={<MdOutlineThumbUpAlt />}
-                      size="sm"
-                    >
-                      10
-                    </Button>
-
-                    <p>2024.03.27 17:21</p>
-                  </div>
-
-                  <p>혹시 구글에 검색해보셨나요?</p>
-                  <div className="flex flex-row items-center gap-3">
-                    <p className="text-blue-600">마우스</p>
-                    <Button
-                      color="primary"
-                      variant="bordered"
-                      startContent={<MdOutlineThumbUpAlt />}
-                      size="sm"
-                    >
-                      10
-                    </Button>
-
-                    <p>2024.03.27 17:21</p>
-                  </div>
-
-                  <p>혹시 구글에 검색해보셨나요?</p>
+        {qnaList.map((question) => (
+          <AccordionItem
+            key={question.question_id}
+            aria-label="Question 1"
+            title={
+              <div className="flex flex-row justify-between">
+                <p>{question.title}</p>
+                <div>
+                  <Chip>{question.author_nickname}</Chip>
+                  <Chip>{question.upvotes}</Chip>
                 </div>
-              </CardBody>
-            </Card>
-          </div>
-        </AccordionItem>
-        <AccordionItem key="2" aria-label="Question 2" title="Question 2">
-          {defaultContent}
-        </AccordionItem>
-        <AccordionItem key="3" aria-label="Question 3" title="Question 3">
-          {defaultContent}
-        </AccordionItem>
+              </div>
+            }
+          >
+            <div className="flex flex-col gap-10">
+              <VoteupButton
+                voteNumber={question.upvotes}
+                voteType="question"
+                question_id={question.question_id}
+                today={today}
+              />
+              <CommentArea
+                disabled={isNickname}
+                question_id={question.question_id}
+                nickname={nickname}
+                today={today}
+              />
+              <CommenSection
+                answers={question.answers}
+                question_id={question.question_id}
+                today={today}
+              />
+            </div>
+          </AccordionItem>
+        ))}
       </Accordion>
     </main>
   );

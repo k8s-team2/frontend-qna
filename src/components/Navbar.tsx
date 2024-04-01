@@ -5,6 +5,7 @@ import {
   NavbarContent,
   NavbarItem,
   Button,
+  Chip,
   Link,
   Input,
   Modal,
@@ -15,10 +16,32 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+
+// TODO: Remove sticky
 
 const Navigation = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [nickname, setNickname] = useState("");
+
+  const [isNickname, setIsNickname] = useState(false);
+
+  useEffect(() => {
+    let n = localStorage.getItem("nickname");
+    if (n) {
+      setNickname(n);
+      setIsNickname(true);
+    }
+  }, []);
+
+  function saveNickname() {
+    if (nickname) {
+      localStorage.setItem("nickname", nickname);
+      setIsNickname(true);
+      //console.log(`nickname ${nickname}`);
+    }
+  }
+
   return (
     <>
       <Navbar>
@@ -27,7 +50,7 @@ const Navigation = () => {
             <p className="font-bold text-inherit">Cloud School Q&A</p>
           </Link>
         </NavbarBrand>
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        {/* <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarItem>
             <Link color="foreground" href="/about">
               About
@@ -38,12 +61,19 @@ const Navigation = () => {
               Q&A Board
             </Link>
           </NavbarItem>
-        </NavbarContent>
+        </NavbarContent> */}
         <NavbarContent justify="end">
           <NavbarItem>
-            <Button onPress={onOpen} color="primary" href="#" variant="flat">
-              시작하기
-            </Button>
+            {isNickname ? (
+              <Chip size="lg" color="primary" variant="flat">
+                닉네임 {nickname}
+              </Chip>
+            ) : (
+              <Button onPress={onOpen} color="primary" href="#" variant="flat">
+                시작하기
+              </Button>
+            )}
+
             <Modal
               isOpen={isOpen}
               onOpenChange={onOpenChange}
@@ -61,13 +91,20 @@ const Navigation = () => {
                         label="Nickname"
                         placeholder="닉네임을 입력해주세요"
                         variant="bordered"
+                        onChange={(e) => {
+                          setNickname(e.target.value);
+                        }}
                       />
                     </ModalBody>
                     <ModalFooter>
                       <Button color="danger" variant="flat" onPress={onClose}>
                         Close
                       </Button>
-                      <Button color="primary" onPress={onClose}>
+                      <Button
+                        color="primary"
+                        onClick={() => saveNickname()}
+                        onPress={onClose}
+                      >
                         접속
                       </Button>
                     </ModalFooter>
