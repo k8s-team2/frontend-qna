@@ -15,37 +15,33 @@ import { useNickname } from "@/app/providers";
 
 const NicknameButton = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { nickname, setNickname } = useNickname();
-  //const [nickname, setNickname] = useState("");
+  const { nickname, setNickname, isNickname } = useNickname();
+  const [name, setName] = useState("");
 
-  const [isNickname, setIsNickname] = useState(false);
   useEffect(() => {
     let n = localStorage.getItem("nickname");
     if (n) {
       setNickname(n);
-      setIsNickname(true);
     }
   }, []);
 
-  function saveNickname() {
-    if (nickname) {
-      localStorage.setItem("nickname", nickname);
-      setIsNickname(true);
-      //console.log(`nickname ${nickname}`);
+  function saveName() {
+    if (name) {
+      localStorage.setItem("nickname", name);
+      setNickname(name);
     }
   }
 
   return (
     <>
-      {" "}
       {isNickname ? (
+        <Button onPress={onOpen} color="primary" href="#" variant="flat">
+          질문하기
+        </Button>
+      ) : (
         <Chip size="lg" color="primary" variant="flat">
           닉네임 {nickname}
         </Chip>
-      ) : (
-        <Button onPress={onOpen} color="primary" href="#" variant="flat">
-          시작하기
-        </Button>
       )}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
@@ -61,7 +57,7 @@ const NicknameButton = () => {
                   placeholder="닉네임을 입력해주세요"
                   variant="bordered"
                   onChange={(e) => {
-                    setNickname(e.target.value);
+                    setName(e.target.value);
                   }}
                 />
               </ModalBody>
@@ -69,11 +65,7 @@ const NicknameButton = () => {
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Close
                 </Button>
-                <Button
-                  color="primary"
-                  onClick={() => saveNickname()}
-                  onPress={onClose}
-                >
+                <Button color="primary" onClick={saveName} onPress={onClose}>
                   접속
                 </Button>
               </ModalFooter>

@@ -1,4 +1,5 @@
 "use client";
+import { useDateInfo, useNickname } from "@/app/providers";
 import {
   Button,
   Textarea,
@@ -11,15 +12,12 @@ import {
 } from "@nextui-org/react";
 import React, { useState } from "react";
 
-interface IQArea {
-  isNickname: boolean;
-  today: string;
-  nickname: string;
-}
-
-const QuestionArea = ({ isNickname, today, nickname }: IQArea) => {
+const QuestionArea = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [question, setQuestion] = useState("");
+  const { today } = useDateInfo();
+  const { nickname, isNickname } = useNickname();
+
   async function postQuestion() {
     const userQuestion = {
       title: question,
