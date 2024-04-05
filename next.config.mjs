@@ -1,4 +1,11 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = { output: "standalone" };
+const nextConfig = {
+  output: "standalone",
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
+};
 
 export default nextConfig;

@@ -38,7 +38,7 @@ export default function Home() {
   async function getQnaData() {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/qna/questions/?date=${today}`
+        `${process.env.NEXT_PUBLIC_API_URL}/qna/questions/?date=${searchDate}`
       );
       const qnaData = await response.json();
       console.log(qnaData);
@@ -56,8 +56,11 @@ export default function Home() {
       console.log(`page.tsx ${n}`);
       setIsNickname(false);
     }
-    getQnaData();
   }, []);
+
+  useEffect(() => {
+    getQnaData();
+  }, [searchDate]);
 
   return (
     <main className="flex min-h-screen flex-col p-24 gap-10">
