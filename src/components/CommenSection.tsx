@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardBody } from "@nextui-org/react";
 import VoteupButton from "./VoteupButton";
+import { format } from "date-fns";
 
 interface IAnswer {
   upvotes: number;
@@ -36,7 +37,9 @@ const CommentSection: React.FC<IProps> = ({ answers, question_id, today }) => {
                   question_id={question_id}
                   today={today}
                 />
-                <p>{content.created_at}</p>
+                <p>
+                  {format(new Date(content.created_at), "yyyy-MM-dd HH:mm:ss")}
+                </p>
               </div>
               <p>{content.content}</p>
             </div>
