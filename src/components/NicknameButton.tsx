@@ -35,13 +35,13 @@ const NicknameButton = () => {
   return (
     <>
       {isNickname ? (
-        <Chip size="lg" color="primary" variant="flat">
-          닉네임 {nickname}
-        </Chip>
-      ) : (
         <Button onPress={onOpen} color="primary" href="#" variant="flat">
           질문하기
         </Button>
+      ) : (
+        <Chip size="lg" color="primary" variant="flat">
+          닉네임 {nickname}
+        </Chip>
       )}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
