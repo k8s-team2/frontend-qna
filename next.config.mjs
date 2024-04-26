@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
-  basePath: '/qna',
+  basePath: '/qa',
   logging: {
     fetches: {
       fullUrl: true,
