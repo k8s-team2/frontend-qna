@@ -19,7 +19,7 @@ const Navigation = () => {
             <p className="font-bold text-inherit">Cloud School Q&A</p>
           </Link>
           <Button variant="bordered" color="primary">
-            <Link href="/attend/">
+            <Link href="https://www.awsteam2.com">
             출석부
             </Link>
           </Button>
